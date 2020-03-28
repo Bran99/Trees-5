@@ -1,5 +1,5 @@
 // Time Complexity : O(N)
-// Space Complexity : O(N)
+// Space Complexity : O(1)
 // Did this code successfully run on Leetcode : Yes
 // Any problem you faced while coding this : No
 
@@ -19,17 +19,17 @@
 var connect = function(root) {
     if (!root) return root;
     
-    const q = [root];
-    while (q.length > 0) {
-        // console.log(q);
-        let level = q.length;
-        for (let i = 0; i < level; i++) {
-            let curr = q.shift();
-            if (i < level - 1) curr.next = q[0];
-            else curr.next = null;
-            
-            if (curr.left) q.push(curr.left, curr.right);
+    let firstOfLevel = root;
+    while (firstOfLevel.left != null) {
+        let cursor = firstOfLevel;
+        while (cursor != null) {
+            cursor.left.next = cursor.right;
+            if (cursor.next != null) {
+                cursor.right.next = cursor.next.left;
+            }
+            cursor = cursor.next;
         }
-    } 
+        firstOfLevel = firstOfLevel.left;
+    }
     return root;
 };
